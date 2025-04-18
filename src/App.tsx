@@ -76,6 +76,93 @@ const DEFAULT_COORDINATES: Coordinate[] = [
 	},
 ];
 
+const DEFAULT_PATHS: Path[] = [
+	{
+		name: "Kimironko-Downtown",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Kimironko")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "DownTown")!,
+		color: "#ef4444",
+		id: "1744903262117",
+	},
+	{
+		name: "Remera-Rwandex",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Remera")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "Rwandex")!,
+		color: "#f97316",
+		id: "1744981948502",
+	},
+	{
+		name: "Nyacyonga-Downtown",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Nyacyonga")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "DownTown")!,
+		color: "#a855f7", // Added a color
+		id: Date.now().toString() + "1",
+	},
+	{
+		name: "Nyamirambo-Downtown",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Nyamirambo")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "DownTown")!,
+		color: "#ec4899", // Added a color
+		id: Date.now().toString() + "2",
+	},
+	{
+		name: "Kabuga-Downtown",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Kabuga")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "DownTown")!,
+		color: "#db2777", // Added a color
+		id: Date.now().toString() + "3",
+	},
+	{
+		name: "Remera-Nyabugogo",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Remera")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "Nyabugogo")!,
+		color: "#14b8a6", // Added a color
+		id: Date.now().toString() + "4",
+	},
+	{
+		name: "Bishenyi-Nyabugogo",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Bishenyi")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "Nyabugogo")!,
+		color: "#0ea5e9", // Added a color
+		id: Date.now().toString() + "5",
+	},
+	{
+		name: "Ndera-Remera",
+		start: {
+			name: "Ndera",
+			lat: -1.9167,
+			lng: 30.15,
+			id: Date.now().toString() + "6a",
+		}, // Assuming approximate coordinates for Ndera
+		end: DEFAULT_COORDINATES.find((c) => c.name === "Remera")!,
+		color: "#64748b", // Added a color
+		id: Date.now().toString() + "6",
+	},
+	{
+		name: "Nyamirambo-Kimisagara-Downtown",
+		// This looks like a multi-point path, which the current 'Path' structure with 'start' and 'end' doesn't directly support.
+		// You might need a different structure to represent this.
+		// For now, I'll represent it as a path from Nyamirambo to Downtown, potentially losing the Kimisagara information in this structure.
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Nyamirambo")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "DownTown")!,
+		color: "#4ade80", // Added a color
+		id: Date.now().toString() + "7",
+	},
+	{
+		name: "Busanza-Remera",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Busanza")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "Remera")!,
+		color: "#eab308", // Added a color
+		id: Date.now().toString() + "8",
+	},
+	{
+		name: "Kanombe-Downtown",
+		start: DEFAULT_COORDINATES.find((c) => c.name === "Kanombe")!,
+		end: DEFAULT_COORDINATES.find((c) => c.name === "DownTown")!,
+		color: "#f43f5e", // Added a color
+		id: Date.now().toString() + "9",
+	},
+];
 // Helper function to load data from localStorage
 const loadFromLocalStorage = <T,>(key: string, defaultValue: T): T => {
 	const saved = localStorage.getItem(key);
@@ -89,7 +176,12 @@ function App() {
 		return loaded.length > 0 ? loaded : DEFAULT_COORDINATES;
 	});
 
-	const [paths, setPaths] = useState<Path[]>(loadFromLocalStorage("paths", []));
+	const [paths, setPaths] = useState<Path[]>(() => {
+		const loaded = loadFromLocalStorage<Path[]>("path", []);
+		// If no coordinates exist in localStorage, use default coordinates
+		return loaded.length > 0 ? loaded : DEFAULT_PATHS;
+	});
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	// Save to localStorage whenever coordinates or paths change
