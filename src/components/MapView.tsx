@@ -6,12 +6,15 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
 import { Coordinate, Path } from "../types";
 import { useMapType } from "./MapTypeContext";
+import { createCustomIcon } from "./PinIcon";
+import pin from "../assets/bus.jpg";
 
 interface MapViewProps {
 	coordinates: Coordinate[];
 	paths: Path[];
 }
 
+// src/components/MapView.tsx
 const mapTiles = {
 	osm: {
 		url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -19,7 +22,7 @@ const mapTiles = {
 			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 	},
 	transport: {
-		url: "https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=YOUR_API_KEY",
+		url: "https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=6170aad10dfd42a38d4d8c709a536f38", // Example API key
 		attribution:
 			'Maps © <a href="https://www.thunderforest.com">Thunderforest</a>, Data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
 	},
@@ -29,7 +32,7 @@ const mapTiles = {
 			'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer">ArcGIS</a>',
 	},
 	cycle: {
-		url: "https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=YOUR_API_KEY",
+		url: "https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=6170aad10dfd42a38d4d8c709a536f38", // Example API key
 		attribution:
 			'Maps © <a href="https://www.thunderforest.com">Thunderforest</a>, Data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
 	},
@@ -97,7 +100,12 @@ export default function MapView({ coordinates, paths }: MapViewProps) {
 
 		// Add markers for all coordinates
 		coordinates.forEach((coord) => {
-			L.marker([coord.lat, coord.lng])
+			L.marker([coord.lat, coord.lng], {
+				icon: createCustomIcon(
+					pin, // Your image path pattern
+					[80, 50] // Custom size
+				),
+			})
 				.addTo(mapRef.current!)
 				.bindPopup(coord.name);
 		});

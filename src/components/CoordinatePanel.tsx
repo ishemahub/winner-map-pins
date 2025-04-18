@@ -35,7 +35,7 @@ export default function CoordinatePanel({
 
 	return (
 		<div className="p-6 h-full flex flex-col">
-			<img src={logo} className=" h-24" alt="Logo" />
+			<img src={logo} className=" h-30" alt="Logo" />
 			<div className="mb-6">
 				<h3 className="text-lg font-semibold mb-3">Add New Point</h3>
 				<div className="grid grid-cols-2 gap-2 mb-2">
